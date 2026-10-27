@@ -311,12 +311,35 @@ def cmd_note(players, args):
     print(f"Note added for {p['id']} ({p['lg']}) on {date}: {os.path.relpath(path, ROOT)}")
 
 
-def save_report(lines, name):
+def filter_slug(args):
+    """Non-default filters as a filename suffix, e.g. '_sideL_age23_spec'."""
+    parts = []
+    if args.side:
+        parts.append(f"side{args.side}")
+    if args.max_age is not None:
+        parts.append(f"age{args.max_age}")
+    if args.specialists:
+        parts.append("spec")
+    if args.min_minutes != 600:
+        parts.append(f"min{args.min_minutes}")
+    if args.include_small:
+        parts.append("small")
+    if getattr(args, "top", None):
+        parts.append(f"top{args.top}")
+    if getattr(args, "combine", False):
+        parts.append("combined")
+    return "".join("_" + p for p in parts)
+
+
+def save_report(lines, name, args):
     os.makedirs(REPORTS, exist_ok=True)
     date = datetime.date.today().isoformat()
-    path = os.path.join(REPORTS, f"{date}_{name}.md")
+    base = os.path.join(REPORTS, f"{date}_{name}{filter_slug(args)}")
+    path, n = base + ".md", 2
+    while os.path.exists(path):  # never overwrite an earlier save
+        path, n = f"{base}_{n}.md", n + 1
     cmdline = "python3 scout.py " + " ".join(f'"{a}"' if " " in a else a for a in sys.argv[1:])
-    with open(path, "w", encoding="utf-8") as f:
+    with open(path, "x", encoding="utf-8") as f:
         f.write(f"<!-- generated {date}: {cmdline} -->\n\n" + "\n".join(lines) + "\n")
     print(f"\nSaved: {os.path.relpath(path, ROOT)}")
 
@@ -361,7 +384,7 @@ def main():
     lines, name = {"list": cmd_list, "rank": cmd_rank, "compare": cmd_compare, "show": cmd_show}[args.cmd](players, args)
     print("\n".join(lines))
     if args.save:
-        save_report(lines, name)
+        save_report(lines, name, args)
 
 
 if __name__ == "__main__":
