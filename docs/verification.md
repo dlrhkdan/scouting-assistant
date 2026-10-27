@@ -9,6 +9,7 @@
 | A. 나이 상한 23 → 24 | `python3 scout.py rank --by passes --side L --specialists --max-age 23`<br>`python3 scout.py rank --by passes --side L --specialists --max-age 24` | 24세로 바꾸면 K1에 Kim Ryun-Seong, K2에 Son Ho-Jun·Kim Ju-Sung·Lee Taek-Geun이 새로 들어옴 | 23세: K1 Choi Woo-Jin, Kim Jae-Hyun / K2 Bae Seo-Joon, Lee Sang-Min, Lee Jun-Jae<br>24세: K1 Choi Woo-Jin, **Kim Ryun-Seong @ Jeju SK (30.52)**, Kim Jae-Hyun / K2 Bae Seo-Joon, Lee Sang-Min, **Son Ho-Jun @ Gyeongnam FC (26.96)**, Lee Jun-Jae, **Kim Ju-Sung @ Chungnam Asan FC (23.93)**, **Lee Taek-Geun @ Paju Frontier (22.79)** | 통과 |
 | B. K2 오른쪽 전문 풀백, 지표 2개 | `python3 scout.py rank --by tackles --side R --league K2 --specialists`<br>`python3 scout.py rank --by pass_acc --side R --league K2 --specialists` | Noh Seung-Ik이 tackles 1위, pass_acc 꼴찌 | tackles: 1위 `Noh Seung-Ik @ Paju Frontier`, 2.58 (8명 중)<br>pass_acc: 8위 `Noh Seung-Ik @ Paju Frontier`, 62.2% (239/384) (8명 중 마지막) | 통과 |
 | C. 90분당 패스 성공 값 독립 계산 | `python3 tests/check_per90.py`<br>(내부에서 `python3 scout.py rank --by passes --side L --max-age 23 --specialists` 실행) | CSV에서 직접 계산한 값(`successful_passes × 90 / league_minutes`)과 scout.py 출력이 23세 이하 왼쪽 전문 풀백(600분 이상) 전원 일치 | 아래 표 참고. `5/5 match - PASS`, exit=0 | 통과 |
+| D. 검증 스크립트가 오류를 잡는지 | 스크래치 폴더에 `scout.py`, `data/`, `tests/check_per90.py`를 복사하고 복사본 `scout.py:122`의 `* 90`을 `* 91`로 바꾼 뒤 `python3 tests/check_per90.py` 실행 (저장소 파일은 수정하지 않음) | 일부러 틀린 계산을 FAIL로 잡고 종료 코드 1 | 5명 전원 FAIL (예: Choi Woo-Jin CSV 33.56 vs scout.py 33.93), `0/5 match`, exit=1 | 통과 |
 
 ## C 상세: tests/check_per90.py 출력
 
