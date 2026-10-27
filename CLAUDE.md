@@ -41,6 +41,12 @@ Filters: `--league K1|K2|all`, `--min-minutes 600`, `--include-small`, `--specia
 No composite score: rankings use one metric at a time. U24 means age 24 and under.
 Slash commands: `/compare`, `/report`, `/note` (in `.claude/commands/`).
 
+## Verification
+
+After changing scout.py, run `python3 tests/check_per90.py` (recomputes per-90 values from
+the CSV without importing scout.py; exits 1 on any mismatch). Record verification cases in
+`docs/verification.md`, with actual results copied from command output only.
+
 ## Data notes (data/players.csv)
 
 - Source: FotMob, `as_of_date` per row. Counting stats are season totals; per-90 values
