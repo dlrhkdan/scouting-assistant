@@ -25,6 +25,9 @@ Reply to the user in Korean.
 7. **Storage.** Watchlist notes: one file per player in `watchlist/`, each entry dated.
    Reports: `reports/`.
 8. **Keep the project small.** Explain the plan before writing code.
+9. **Approval before changes.** Before writing code or changing any file, show the plan
+   and wait for the user's approval.
+   <!-- Why: rule 8 only says "explain"; this makes approval explicit so no file changes without the user's OK. -->
 
 ## scout.py usage
 
